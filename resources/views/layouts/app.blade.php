@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'SPARK EDUCATION') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
+
+    <!-- SWEET-ALERT CDN -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body style="background-image: url('{{ asset('asset/test.jpg')}}');">
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel"style="background-image: url('{{ asset('asset/test.jpg')}}');" >
+            <div class="container">
+                <a style="color: white" class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'SPARK EDUCATION') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto" style="font-size:20px" >
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a style="color: white" class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color: white" class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <a style="color: white" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                  Hi  {{ Auth::user()->firstName }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a style="color: black" class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+            <div class="container">
+                <div class="row">
+                        @if (Auth::check())
+
+                            <div class="col-lg-4">
+                                <ul class="list-group">
+                                   <li class="list-group-item"><a  style="color: black" href="{{route('home')}}">Home</a></li>
+                                </ul>
+                                @if(Auth::user()->admin)
+
+                                   <ul class="list-group">
+                                        <li  class="list-group-item"><a  style="color: black" href="{{route('student')}}">Student List</a></li>
+                                    </ul>
+                                    @endif
+
+                            </div>
+                      @endif
+
+                    <div class="col-lg-8 ">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</body>
+</html>
